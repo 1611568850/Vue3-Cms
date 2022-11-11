@@ -25,7 +25,7 @@ class ShAxios {
     this.instance.interceptors.request.use(
       (config) => {
         if (this.showLoading) {
-          console.log('this.showLoading', this.showLoading)
+          // console.log('this.showLoading', this.showLoading)
           this.loading = ElLoading.service({
             lock: true,
             text: '正在请求数据',
@@ -39,13 +39,16 @@ class ShAxios {
         return err
       }
     )
+    // 全局响应拦截器
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('我是全局响应拦截器')
+        // console.log('我是全局响应拦截器')
         if (this.loading) {
           this.loading.close()
         }
-        return res
+        if (res.status === 200) {
+          return res.data
+        }
       },
       (err) => {
         if (this.loading) {
@@ -63,7 +66,7 @@ class ShAxios {
       if (config.showLoading === false) {
         this.showLoading = false
       }
-      console.log('this.showLoading', this.showLoading)
+      // console.log('this.showLoading', this.showLoading)
 
       this.instance
         .request<any, T>(config)

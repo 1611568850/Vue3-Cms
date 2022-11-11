@@ -7,7 +7,6 @@
       stretch
       model-value="accountTabpane"
       ref="EltabRef"
-      @tab-click="changeClick"
     >
       <el-tab-pane name="accountTabpane">
         <template #label>
@@ -52,22 +51,22 @@ import { User, Cellphone } from '@element-plus/icons-vue'
 import loginAccount from './login-account.vue'
 import loginPhone from './login-phone.vue'
 import { ref } from 'vue'
+
+// 定义属性
 const EltabRef = ref<typeof ElTabs>()
-function changeClick() {
-  console.log('尝试拿model-value', EltabRef.value?.currentName)
-  // EltabRef.model-value = 'accountTabpane'
-}
 const accountRef = ref<InstanceType<typeof loginAccount>>()
 const phoneRef = ref<InstanceType<typeof loginPhone>>()
+
+// 定义方法
+const isKeepPassword = ref(true)
 const handeLoginClick = () => {
   // console.log('立即登录', accountRef.value?.loginAction())
   if (EltabRef.value?.currentName === 'accountTabpane') {
-    accountRef.value?.loginAction()
+    accountRef.value?.loginAction(isKeepPassword.value)
   } else {
     phoneRef.value?.loginAction()
   }
 }
-const isKeepPassword = ref(true)
 </script>
 <style lang="less" scoped>
 .demo-tabs > .el-tabs__content {

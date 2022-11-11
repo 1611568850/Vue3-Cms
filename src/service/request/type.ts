@@ -1,6 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 export interface Shinterceports<T = AxiosResponse> {
-  ShinterceportRequest?: (target: AxiosRequestConfig) => AxiosRequestConfig
+  ShinterceportRequest?: (config: AxiosRequestConfig) => AxiosRequestConfig
   ShinterceportRequestCatch?: (err: any) => any
   ShinterceportResponse?: (res: T) => T
   ShinterceportResponseCatch?: (err: any) => any

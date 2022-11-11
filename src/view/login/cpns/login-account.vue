@@ -10,29 +10,41 @@
         <el-input v-model="account.name" />
       </el-form-item>
       <el-form-item label="密码" label-width="60px" prop="password">
-        <el-input v-model="account.password" />
+        <el-input v-model="account.password" type="password" show-password />
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ElForm, ElInput, ElFormItem, Instance } from 'element-plus'
+import { ElForm, ElInput, ElFormItem } from 'element-plus'
 import { reactive, defineExpose } from 'vue'
 import rules from '../config/account-config'
 import { ref } from 'vue'
+import localCache from '@/utils/cache'
+import useLoginStore from '@/stores/login/login'
+
+// 收集用户的登录信息
 const account = reactive({
-  name: '',
-  password: ''
+  name: localCache.getCache('name') ?? '',
+  password: localCache.getCache('password') ?? ''
 })
 
+// 登录所用数据
 const ElFormRef = ref<InstanceType<typeof ElForm>>()
-function loginAction() {
-  console.log('这里是 账号 登录地方')
+const useStore = useLoginStore()
+// 登录函数主体
+function loginAction(isKeepPassword: boolean) {
   ElFormRef.value?.validate((isValide) => {
     // console.log(isValide)
     if (isValide) {
-      console.log('执行登录逻辑')
+      if (isKeepPassword) {
+        localCache.setCache('name', account.name)
+        localCache.setCache('password', account.password)
+      } else {
+        localCache.clearCache()
+      }
+      useStore.accountLoginAction({ ...account })
     }
     return isValide
   })
