@@ -1,0 +1,11 @@
+@import url('//at.alicdn.com/t/c/font_3766868_8jrch8pabyu.css');
+body {
+  padding: 0;
+  margin: 0;
+}
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+}

@@ -4,11 +4,17 @@ import './assets/css/index.less'
 import App from './App.vue'
 import router from './router'
 import pinia from './stores'
-// import shrequest from './service'
+import useLoginStore from '@/stores/login/login'
 
-// import ElementPlus from 'element-plus'
-// import 'element-plus/dist/index.css'
-createApp(App).use(pinia).use(router).mount('#app')
+// // import shrequest from './service'
+// // import ElementPlus from 'element-plus'
+// // import 'element-plus/dist/index.css'
+const app = createApp(App)
+app.use(pinia)
+const loginStore = useLoginStore()
+loginStore.loadLocalLogin()
+app.use(router)
+app.mount('#app')
 // interface DataType {
 //   data: any
 // }

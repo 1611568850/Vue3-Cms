@@ -4,6 +4,8 @@ const { defineConfig } = require('@vue/cli-service')
 // const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 module.exports = defineConfig({
   transpileDependencies: true,
+  // lintOnSave: false,
+
   devServer: {
     proxy: {
       '/api': {
