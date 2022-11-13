@@ -7,6 +7,7 @@ export function mapMenusToRoutes(menuList: any): RouteRecordRaw[] {
   routeFiles.keys().forEach((key) => {
     const route = require('../view/main' + key.split('.')[1])
     AllRoutes.push(route.default)
+    console.log(AllRoutes)
   })
   console.log('拿到的数据', AllRoutes)
 
