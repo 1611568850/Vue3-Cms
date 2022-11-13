@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <div class="header"><slot name="header"></slot></div>
+
     <el-form :label-width="labelWidth" :style="itemStyle">
       <el-row>
         <template v-for="item in fromItems" :key="item.label">
@@ -9,11 +11,13 @@
                 v-if="item.type === 'input' || item.type === 'password'"
               >
                 <el-input
+                  v-model="formData[`${item.field}`]"
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
               /></template>
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
+                  v-model="formData[`${item.field}`]"
                   v-bind="item.otherOption"
                   style="width: 100%"
                 ></el-date-picker>
@@ -22,6 +26,7 @@
                 <el-select :placeholder="item.placeholder" style="width: 100%">
                   <el-option
                     v-for="option in item.options"
+                    v-model="formData[`${item.field}`]"
                     :key="option.label"
                     :label="option.label"
                     :value="option.value"
@@ -33,6 +38,8 @@
         </template>
       </el-row>
     </el-form>
+
+    <div class="footer"><slot name="footer"></slot></div>
   </div>
 </template>
 
@@ -49,7 +56,12 @@ import {
   ElRow,
   ElCol
 } from 'element-plus'
+import { ref, watch, defineEmits } from 'vue'
 const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true
+  },
   fromItems: {
     type: Array as PropType<IFromItem[]>,
     default: () => []
@@ -71,6 +83,11 @@ const props = defineProps({
       sm: 24
     })
   }
+})
+const $emit = defineEmits(['update:modelValue'])
+const formData = ref({ ...props.modelValue })
+watch(formData, (newValue) => $emit('update:modelValue', newValue), {
+  deep: true
 })
 </script>
 

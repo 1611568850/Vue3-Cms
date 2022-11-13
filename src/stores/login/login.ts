@@ -48,7 +48,7 @@ const useLoginStore = defineStore('login', {
     async accountMenuList(id: number) {
       const userMenuListResponse = await reqUserMenuListRequest(id)
       this.userMenuList = userMenuListResponse.data
-      console.log(userMenuListResponse.data)
+      // console.log(userMenuListResponse.data)
       LocalCache.setCache('userMenuList', this.userMenuList)
     },
     // 4 传入用户对应列表,动态路由
@@ -56,15 +56,16 @@ const useLoginStore = defineStore('login', {
       // console.log('用户列表', menuList)
       const routes = mapMenusToRoutes(menuList)
       if (routes.length !== 0) {
-        console.log(routes)
+        // console.log(routes)
         routes.forEach((route) => {
           router.addRoute('main', route)
-          console.log(router)
+          // console.log(router)
         })
       }
     },
+    // 5. 解决动态路由刷新问题
     async loadLocalLogin() {
-      console.log('loadLocalLogin执行了')
+      // console.log('loadLocalLogin执行了')
       // const token = LocalCache.getCache('token')
       // if (token) {
       //   this.token = token

@@ -1,17 +1,20 @@
 import { IFormItemConfig } from '@/base-ui/form'
-const searchformItemConfig: IFormItemConfig = {
+const searchFormItemConfig: IFormItemConfig = {
   fromItems: [
     {
+      field: 'name',
       label: '用户名',
       type: 'input',
       placeholder: '请输入用户名'
     },
     {
+      field: 'password',
       label: '密码',
       type: 'password',
       placeholder: '请输入,密码'
     },
     {
+      field: 'value',
       label: '爱好',
       type: 'select',
       placeholder: '请输入爱好',
@@ -27,6 +30,7 @@ const searchformItemConfig: IFormItemConfig = {
       ]
     },
     {
+      field: 'createTime',
       label: '创建时间',
       type: 'datepicker',
       otherOption: {
@@ -48,4 +52,4 @@ const searchformItemConfig: IFormItemConfig = {
   },
   labelWidth: '100px'
 }
-export default searchformItemConfig
+export default searchFormItemConfig

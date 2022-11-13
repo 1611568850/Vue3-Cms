@@ -49,8 +49,12 @@
 import { ElMenu, ElSubMenu, ElMenuItem, ElIcon } from 'element-plus'
 import useLoginStore from '@/stores/login/login'
 // import { Monitor, Setting, Goods, ChatDotRound } from '@element-plus/icons-vue'
-import { defineProps } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { defineProps, defineExpose } from 'vue'
+import { useRouter } from 'vue-router'
+import LocalCache from '@/utils/cache'
+import { pathMapToMenu } from '@/utils/map-menus'
+import { IbreadCrumbItem } from '@/base-ui/breadcrumb'
+
 // 获取控制放大缩小的值
 const props = defineProps({
   isCollapsed: {
@@ -63,14 +67,22 @@ const props = defineProps({
 const loginStore = useLoginStore()
 // 点击菜单项,拿到对应的route地址
 const router = useRouter()
-const route = useRoute()
+
 function handleItemClick(item: any) {
+  // handleBreadcurmbs(item),
   router.push({
     path: item.url ?? '/not-found'
   })
-  // console.log(item.url)
-  // console.log(route.path)
 }
+// 面包屑的数据
+// function handleBreadcurmbs(item?: any): IbreadCrumbItem[] {
+//   const userMenuList = LocalCache.getCache('userMenuList')
+//   console.log('userMenuList', userMenuList)
+//   console.log('useRoute().path', item.url)
+//   const breadcurmbs: IbreadCrumbItem[] = pathMapToMenu(userMenuList, item.url)
+//   console.log('面包屑数据', breadcurmbs)
+//   return breadcurmbs
+// }
 </script>
 
 <style lang="less">

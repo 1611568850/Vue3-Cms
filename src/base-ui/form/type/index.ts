@@ -1,6 +1,7 @@
 type IFromItemType = 'input' | 'password' | 'select' | 'datepicker'
 
 export interface IFromItem {
+  field: string
   label: string
   type: IFromItemType
   rules?: any[]

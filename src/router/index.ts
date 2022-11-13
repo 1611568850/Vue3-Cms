@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import LocalCache from '@/utils/cache'
-import useLoginStore from '@/stores/login/login'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { firstMenue } from '@/utils/map-menus'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     path: '/login',
@@ -29,24 +28,14 @@ const router = createRouter({
   routes
 })
 router.beforeEach((to) => {
-  if (to.path === '/main') {
+  if (to.path !== '/login') {
     const token = LocalCache.getCache('token')
     if (!token) {
       return '/login'
     }
   }
-  // else {
-  //   const loginStore = useLoginStore()
-  //   console.log('执行了')
-  //   loginStore.loadLocalLogin()
-  // }
-  // console.log(router.getRoutes())
-  // console.log(to) // route对象
-
-  // const routes = mapMenusToRoutes(loginStore.userMenuList)
-  // routes.forEach((route) => {
-  //   router.addRoute('main', route)
-  //   console.log(router)
-  // })
+  if (to.path === '/main') {
+    return firstMenue.path
+  }
 })
 export default router

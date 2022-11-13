@@ -10,10 +10,7 @@
     </div>
     <div class="content">
       <div class="breadContanier">
-        <el-breadcrumb :separator-icon="ArrowRight">
-          <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-          <el-breadcrumb-item>promotion management</el-breadcrumb-item>
-        </el-breadcrumb>
+        <ShBreadCurmb :breadcurmbs="breadcurmbs"></ShBreadCurmb>
       </div>
       <div class="userInfo">
         <navUserInfoVue></navUserInfoVue>
@@ -23,10 +20,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ElIcon, ElBreadcrumb, ElBreadcrumbItem } from 'element-plus'
-import { Fold, Expand, ArrowRight } from '@element-plus/icons-vue'
-import { ref, defineEmits } from 'vue'
+import { ElIcon } from 'element-plus'
+import { Fold, Expand } from '@element-plus/icons-vue'
+import ShBreadCurmb from '@/base-ui/breadcrumb'
+import { ref, defineEmits, watch } from 'vue'
 import navUserInfoVue from './nav-userInfo.vue'
+import LocalCache from '@/utils/cache'
+import { pathMapToMenu } from '@/utils/map-menus'
+import { IbreadCrumbItem } from '@/base-ui/breadcrumb'
+import { useRoute } from 'vue-router'
+// 获取面包屑数据
 
 const isCollapse = ref(false)
 const $emits = defineEmits(['foldChange'])
@@ -34,6 +37,18 @@ function changeCollapse() {
   isCollapse.value = !isCollapse.value
   $emits('foldChange', isCollapse.value)
 }
+
+const route = useRoute()
+const userMenuList = LocalCache.getCache('userMenuList')
+let breadcurmbs = ref<IbreadCrumbItem[]>()
+watch(
+  () => route.path,
+  () => {
+    breadcurmbs.value = pathMapToMenu(userMenuList, route.path)
+    // console.log('监听到啊了', breadcurmbs.value)
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="less">
