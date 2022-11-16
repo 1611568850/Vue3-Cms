@@ -1,17 +1,28 @@
 <template>
   <div class="user">
-    <searchPage :searchFormItemConfig="searchFormItemConfig"></searchPage>
+    <searchPage
+      :searchFormItemConfig="searchFormItemConfig"
+      @SearchClick="handelSearchClick"
+      @ResetClick="handelResetClick"
+    ></searchPage>
     <div class="content">
-      <page-table :contentTableConfig="contentTableConfig"></page-table>
+      <page-table
+        ref="pageTable"
+        :contentTableConfig="contentTableConfig"
+        pageName="user"
+      ></page-table>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import searchPage from '@/components/page-search/src/page-search.vue'
-import PageTable from '@/components/page-table'
 import searchFormItemConfig from '@/view/main/system/user/config/searchConfig'
+import PageTable from '@/components/page-table/src/page-table.vue'
 import contentTableConfig from '@/view/main/system/user/config/tableConfig'
+import { usePageSearch } from '@/hooks/usePageSearch'
+
+const [pageTable, handelSearchClick, handelResetClick] = usePageSearch()
 </script>
 
 <style scoped lang="less">

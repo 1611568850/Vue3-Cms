@@ -1,6 +1,8 @@
 <template>
-  <div class="container">
-    <div class="header"><slot name="header"></slot></div>
+  <div class="form">
+    <div class="headerContainer">
+      <slot name="header"></slot>
+    </div>
 
     <el-form :label-width="labelWidth" :style="itemStyle">
       <el-row>
@@ -44,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType } from 'vue'
+import { defineProps, PropType, computed } from 'vue'
 import { IFromItem } from '../type'
 import {
   ElForm,
@@ -84,14 +86,29 @@ const props = defineProps({
     })
   }
 })
+let formData = ref({ ...props.modelValue })
+// watch(
+//   () => props.modelValue,
+//   (value) => {
+//     console.log('bianbhua', value)
+//     console.log(props.modelValue)
+//     formData.value = value
+//   },
+//   { deep: true }
+// )
+// watch(props.modelValue)
 const $emit = defineEmits(['update:modelValue'])
-const formData = ref({ ...props.modelValue })
 watch(formData, (newValue) => $emit('update:modelValue', newValue), {
   deep: true
 })
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+.header {
+  text-align: center;
+  display: inline-block;
+  color: #c43d33;
+}
 .el-form {
   padding-top: 20px;
   transition: padding 1s;
