@@ -51,7 +51,7 @@ const handleResetClick = () => {
 const handleSearchClick = () => {
   console.log('点击了')
   $emits('SearchClick', formData.value)
-  // console.log(formData.value)
+  console.log(formData.value)
 }
 </script>
 

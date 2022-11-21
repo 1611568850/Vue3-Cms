@@ -31,8 +31,8 @@ const searchFormItemConfig: IFormItemConfig = {
       type: 'select',
       placeholder: '请输入用户状态',
       options: [
-        { title: '启用', value: 1 },
-        { title: '禁用', value: 0 }
+        { label: '启用', value: '1' },
+        { label: '禁用', value: '0' }
       ]
     },
     {

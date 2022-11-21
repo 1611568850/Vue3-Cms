@@ -11,8 +11,9 @@
     <el-table
       border
       style="width: 100%"
-      :data="userList"
+      :data="DataList"
       @selection-change="hadleSelectionChange"
+      v-bind="childrenProps"
     >
       <el-table-column
         v-if="showSelectColumn"
@@ -28,7 +29,7 @@
         min-width="60px"
       ></el-table-column>
       <template v-for="PropItem in propList" :key="PropItem.prop">
-        <el-table-column v-bind="PropItem" align="center">
+        <el-table-column v-bind="PropItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <slot :name="PropItem.slotName" :row="scope.row">
               {{ scope.row[PropItem.prop] }}
@@ -37,17 +38,17 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
+    <div class="footer" v-if="showPagination">
       <slot name="footer">
         <el-pagination
-          v-model:current-page="currentPage4"
-          v-model:page-size="pageSize4"
-          :page-sizes="[100, 200, 300, 400]"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
+          :page-sizes="[10, 20, 30]"
           :small="small"
           :disabled="disabled"
           :background="background"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="DataCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
@@ -60,19 +61,8 @@
 import { defineProps, PropType } from 'vue'
 import { ElTableColumn, ElTable, ElPagination } from 'element-plus'
 import { defineEmits } from 'vue'
-import { ref } from 'vue'
-
-const currentPage4 = ref(4)
-const pageSize4 = ref(100)
-const small = ref(false)
-const background = ref(false)
-const disabled = ref(false)
-const handleSizeChange = (val: number) => {
-  console.log(`${val} items per page`)
-}
-const handleCurrentChange = (val: number) => {
-  console.log(`current page: ${val}`)
-}
+import { ref, computed } from 'vue'
+import useSystemStore from '@/stores/main/system/system'
 
 const props = defineProps({
   contentTableConfig: {
@@ -83,7 +73,7 @@ const props = defineProps({
     type: Array as PropType<any[]>,
     required: true
   },
-  userList: {
+  DataList: {
     type: Array as PropType<any[]>,
     default: () => []
   },
@@ -98,6 +88,22 @@ const props = defineProps({
   title: {
     type: String,
     default: ''
+  },
+  DataCount: {
+    type: Number,
+    default: 0
+  },
+  page: {
+    type: Object,
+    default: () => ({ currentPage: 0, pageSize: 10 })
+  },
+  childrenProps: {
+    type: Object,
+    default: () => ({})
+  },
+  showPagination: {
+    type: Boolean,
+    default: true
   }
   // listData: {
   //   type: Array,
@@ -108,10 +114,22 @@ const props = defineProps({
   //   required: true
   // }
 })
-const $emit = defineEmits(['selectionChange'])
+//选项发生变化会触发el-table的事件,会返回改变的元素,自定义分发事件,在需要的地方监听事件,就可以拿到
+const $emit = defineEmits(['selectionChange', 'update:page'])
 function hadleSelectionChange(value: any) {
-  console.log(value)
+  // console.log('被选中', value)
   $emit('selectionChange', value)
+}
+// 底部pager页数据
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
+
+const handleSizeChange = (pageSize: number) => {
+  $emit('update:page', { ...props.page, pageSize })
+}
+const handleCurrentChange = (currentPage: number) => {
+  $emit('update:page', { ...props.page, currentPage })
 }
 </script>
 

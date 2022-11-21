@@ -8,13 +8,15 @@ import {
 import { IAccount } from '@/service/login/type'
 import { RootObject } from '@/service/login/type'
 import LocalCache from '@/utils/cache'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { Ilogin } from './type'
+import { mapMenusToRoutes, mapMenusToPermission } from '@/utils/map-menus'
 
 const useLoginStore = defineStore('login', {
-  state: () => ({
+  state: (): Ilogin => ({
     token: LocalCache.getCache('token') || '',
     userInfo: LocalCache.getCache('userInfo') || ({} as RootObject),
-    userMenuList: LocalCache.getCache('userMenuList')
+    userMenuList: LocalCache.getCache('userMenuList'),
+    permissions: []
   }),
   actions: {
     //实现登录的逻辑
@@ -55,6 +57,11 @@ const useLoginStore = defineStore('login', {
     async changeUserMenus(menuList: any) {
       // console.log('用户列表', menuList)
       const routes = mapMenusToRoutes(menuList)
+      // 根据用户请求的菜单列表,获取对应的权限
+      const permissions = mapMenusToPermission(menuList)
+      this.permissions = permissions
+      // console.log(this.permissions)
+      console.log('权限', permissions)
       if (routes.length !== 0) {
         // console.log(routes)
         routes.forEach((route) => {

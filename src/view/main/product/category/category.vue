@@ -1,9 +1,7 @@
 <template>
-  <div class="category">
-    <h2>category</h2>
-  </div>
+  <div class="container"></div>
 </template>
 
 <script lang="ts" setup></script>
 
-<style scoped></style>
+<style lang="less" scoped></style>

@@ -8,7 +8,7 @@
       <el-row>
         <template v-for="item in fromItems" :key="item.label">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label">
+            <el-form-item :label="item.label" v-if="!item.isHidden">
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
@@ -25,10 +25,13 @@
                 ></el-date-picker>
               </template>
               <template v-else-if="item.type === 'select'">
-                <el-select :placeholder="item.placeholder" style="width: 100%">
+                <el-select
+                  :placeholder="item.placeholder"
+                  style="width: 100%"
+                  v-model="formData[`${item.field}`]"
+                >
                   <el-option
                     v-for="option in item.options"
-                    v-model="formData[`${item.field}`]"
                     :key="option.label"
                     :label="option.label"
                     :value="option.value"
@@ -84,18 +87,22 @@ const props = defineProps({
       md: 12,
       sm: 24
     })
+  },
+  isHidden: {
+    type: Boolean,
+    default: false
   }
 })
 let formData = ref({ ...props.modelValue })
-// watch(
-//   () => props.modelValue,
-//   (value) => {
-//     console.log('bianbhua', value)
-//     console.log(props.modelValue)
-//     formData.value = value
-//   },
-//   { deep: true }
-// )
+watch(
+  () => props.modelValue,
+  (value) => {
+    // console.log('bianbhua', value)
+    // console.log(props.modelValue)
+    formData.value = value
+  },
+  { deep: true }
+)
 // watch(props.modelValue)
 const $emit = defineEmits(['update:modelValue'])
 watch(formData, (newValue) => $emit('update:modelValue', newValue), {

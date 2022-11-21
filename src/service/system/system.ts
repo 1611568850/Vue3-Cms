@@ -6,3 +6,9 @@ export function reqPageListData(url: string, querInfo: any) {
     data: querInfo
   })
 }
+export function reqDeleteInfo(url: string, userInfo: any) {
+  return shrequest.delete<IDataType>({
+    url: url,
+    data: userInfo
+  })
+}

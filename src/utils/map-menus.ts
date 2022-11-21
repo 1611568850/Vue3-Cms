@@ -1,5 +1,6 @@
 // 拿到所有动态生成的路由
 import { IbreadCrumbItem } from '@/base-ui/breadcrumb'
+import menu from '@/view/main/system/menu/menu'
 import { RouteRecordRaw } from 'vue-router'
 let firstMenue: any = null
 export function mapMenusToRoutes(menuList: any): RouteRecordRaw[] {
@@ -49,4 +50,19 @@ export function pathMapToMenu(menuList: any, currentPath: string): any {
     }
   }
   return breadcrubs
+}
+// 拿到权限数组
+export function mapMenusToPermission(useMenuList: any) {
+  const permissions: string[] = []
+  const _recurseGetPermission = (menus: any) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _recurseGetPermission(menu.children ?? [])
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission)
+      }
+    }
+  }
+  _recurseGetPermission(useMenuList)
+  return permissions
 }

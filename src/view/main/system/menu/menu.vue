@@ -1,9 +1,15 @@
 <template>
-  <div class="menu">
-    <h2>menu</h2>
+  <div class="category">
+    <pageTableVue
+      :contentTableConfig="menuTableConfig"
+      pageName="menu"
+    ></pageTableVue>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import pageTableVue from '@/components/page-table'
+import menuTableConfig from './config/menuTableConfig'
+</script>
 
 <style scoped></style>
